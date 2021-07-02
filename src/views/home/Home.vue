@@ -1,15 +1,20 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <home-swiper :banners="banners"></home-swiper>
-    <recommend-view :recommends="recommends"></recommend-view>
-    <feature></feature>
-    <tab-control
-      :title="['流行', '新款', '精选']"
-      class="tab-control"
-      @tabClick="tabClick"
-    ></tab-control>
-    <goods-list :goods="showGoods"></goods-list>
+    <scroll class="content" ref="scroll">
+      <ul>
+        <home-swiper :banners="banners"></home-swiper>
+        <recommend-view :recommends="recommends"></recommend-view>
+        <feature></feature>
+        <tab-control
+          :title="['流行', '新款', '精选']"
+          class="tab-control"
+          @tabClick="tabClick"
+        ></tab-control>
+        <goods-list :goods="showGoods"></goods-list>
+      </ul>
+    </scroll>
+    <back-top @click.native="backClick"></back-top>
   </div>
 </template>
 
@@ -21,8 +26,11 @@ import Feature from "./childComp/Feature";
 import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
+import Scroll from "components/common/scroll/Scroll";
+import BackTop from "components/content/backTop/BackTop";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
+
 export default {
   components: {
     HomeSwiper,
@@ -32,6 +40,8 @@ export default {
     NavBar,
     TabControl,
     GoodsList,
+    Scroll,
+    BackTop,
   },
   data() {
     return {
@@ -61,6 +71,10 @@ export default {
   },
 
   methods: {
+    backClick() {
+      this.$refs.scroll.backTop();
+    },
+
     tabClick(index) {
       switch (index) {
         case 0:
@@ -94,7 +108,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .home-nav {
   position: fixed;
   left: 0;
@@ -104,12 +118,26 @@ export default {
   background-color: var(--color-tint);
   z-index: 9;
 }
+
 #home {
-  padding-top: 45px;
+  padding-top: 44px;
+  /* vh是视口高度 */
+  height: 100vh;
+  position: relative;
 }
 
 .tab-control {
   position: sticky;
-  top: 45px;
+  top: 44px;
+  background-color: aqua;
+  z-index: 9;
+}
+.content {
+  overflow: hidden;
+  position: absolute;
+  top: 44px;
+  bottom: 48px;
+  right: 0;
+  left: 0;
 }
 </style>
