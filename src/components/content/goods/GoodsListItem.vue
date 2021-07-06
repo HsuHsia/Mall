@@ -1,13 +1,11 @@
 <template>
-  <div class="goods-item">
-    <a :href="goodsItem.link">
-      <img :src="goodsItem.show.img" alt="" />
-      <div class="goods-info">
-        <div class="goods-title">{{ goodsItem.title }}</div>
-        <span class="goods-price">{{ goodsItem.price }}</span>
-        <span class="goods-collect">{{ goodsItem.cfav }}</span>
-      </div>
-    </a>
+  <div class="goods-item" @click="itemClick">
+    <img :src="goodsItem.show.img" alt="" />
+    <div class="goods-info">
+      <div class="goods-title">{{ goodsItem.title }}</div>
+      <span class="goods-price">{{ goodsItem.price }}</span>
+      <span class="goods-collect">{{ goodsItem.cfav }}</span>
+    </div>
   </div>
 </template>
 
@@ -19,6 +17,12 @@ export default {
       default() {
         return {};
       },
+    },
+  },
+
+  methods: {
+    itemClick() {
+      this.$router.push("/detail/" + this.goodsItem.iid).catch((err) => {});
     },
   },
 };
